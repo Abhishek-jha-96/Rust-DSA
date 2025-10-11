@@ -1,7 +1,7 @@
 pub struct Tree {
-    value: i32,
-    left: Option<Box<Tree>>,
-    right: Option<Box<Tree>>,
+    pub value: i32,
+    pub left: Option<Box<Tree>>,
+    pub right: Option<Box<Tree>>,
 }
 
 impl Tree {

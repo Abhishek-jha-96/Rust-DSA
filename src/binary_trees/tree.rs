@@ -30,12 +30,37 @@ impl Tree {
         }
     }
 
-    pub fn from_values(values: impl IntoIterator<Item = i32>) -> Option<Box<Tree>> {
-        let mut root = None;
-        for value in values {
-            Self::insert(&mut root, value);
+    pub fn from_values(values: Vec<i32>) -> Option<Box<Tree>> {
+        use std::collections::VecDeque;
+
+        if values.is_empty() {
+            return None;
         }
-        root
+
+        let root = Box::new(Tree::new(values[0]));
+        let mut queue = VecDeque::new();
+        queue.push_back(root.as_ref() as *const Tree as *mut Tree);
+
+        let mut i = 1;
+        while i < values.len() {
+            let node_ptr = queue.pop_front().unwrap();
+            unsafe {
+                if i < values.len() {
+                    let left = Box::new(Tree::new(values[i]));
+                    (*node_ptr).left = Some(left);
+                    queue.push_back((*node_ptr).left.as_mut().unwrap().as_mut());
+                    i += 1;
+                }
+                if i < values.len() {
+                    let right = Box::new(Tree::new(values[i]));
+                    (*node_ptr).right = Some(right);
+                    queue.push_back((*node_ptr).right.as_mut().unwrap().as_mut());
+                    i += 1;
+                }
+            }
+        }
+
+        Some(root)
     }
 
     pub fn preorder_collect(root: &Option<Box<Self>>, result: &mut Vec<i32>) {

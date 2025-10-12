@@ -19,3 +19,12 @@ pub fn btree_balance_test() {
 
     assert_eq!(result, true);
 }
+
+#[test]
+pub fn btree_symmetry_test() {
+    let values = vec![1, 2, 2, 3, 4, 4, 3];
+    let root = Tree::from_values(values);
+    let result = rust_dsa::binary_trees::symmetry_check::is_symmetric(&root);
+
+    assert_eq!(result, true);
+}

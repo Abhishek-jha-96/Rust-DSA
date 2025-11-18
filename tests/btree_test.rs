@@ -28,3 +28,12 @@ pub fn btree_symmetry_test() {
 
     assert_eq!(result, true);
 }
+
+#[test]
+pub fn btree_lca_test() {
+    let values = vec![1, 2, 3, 4, 5];
+    let root = Tree::from_values(values);
+    let result = rust_dsa::binary_trees::lca::lowest_common_ancestor(&root, &Some(Box::new(Tree { value: 4, left: None, right: None })), &Some(Box::new(Tree { value: 5, left: None, right: None })));
+
+    assert_eq!(result, (2, Some(2)));
+}
